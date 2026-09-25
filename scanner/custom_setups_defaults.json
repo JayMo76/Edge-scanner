@@ -1,0 +1,890 @@
+{
+  "_note": "Seeded into data/setups/custom/ on first run, only when that directory is empty. Sample custom setups to start from: edit, duplicate or delete them in Config > Setups. The sample library in setup_library.json is installed separately by scripts/install_setup_library.py.",
+  "setups": [
+    {
+      "id": "cs_5min_hod",
+      "name": "5MIN HOD",
+      "color": "#4caf50",
+      "enabled": true,
+      "mode": "or",
+      "direction": "long",
+      "sessions": [
+        "rth"
+      ],
+      "repeat_sec": 0,
+      "and_window_min": 5,
+      "min_triggers": 2,
+      "size_hint": "half",
+      "triggers": [
+        {
+          "id": "break_recent_high",
+          "options": [
+            "5"
+          ],
+          "params": {
+            "lookback": 5.0
+          },
+          "repeat_sec": 0
+        }
+      ],
+      "notes": "Breaks over the highest high of the last 5 completed 5-minute candles while the last 5 minutes trade at least 2x the average of the 10 five-minute blocks before. Mirror of 5MIN LOD.",
+      "universe_profile": "up_liquid_movers",
+      "parameters": [
+        {
+          "id": "rel_vol",
+          "op": "gte",
+          "value": 200.0,
+          "option": "5",
+          "params": {
+            "lookback": 10.0
+          }
+        }
+      ],
+      "parameter_set": "",
+      "pending_filters": [],
+      "source": "sample"
+    },
+    {
+      "id": "cs_60d_high_low",
+      "name": "60-Day High/Low",
+      "color": "#22c55e",
+      "enabled": true,
+      "mode": "or",
+      "direction": "all",
+      "sessions": [
+        "rth"
+      ],
+      "repeat_sec": 0,
+      "and_window_min": 5,
+      "min_triggers": 2,
+      "size_hint": "half",
+      "triggers": [
+        {
+          "id": "hi_lo_60d",
+          "options": [
+            "high",
+            "low"
+          ],
+          "params": {
+            "days": 60.0
+          },
+          "repeat_sec": 0
+        }
+      ],
+      "notes": "A 1-minute close above the highest high, or below the lowest low, of the last 60 completed sessions. A true 60-session level needs about a year of daily history loaded (--history-days).",
+      "universe_profile": "up_liquid_movers",
+      "parameters": [],
+      "parameter_set": "",
+      "pending_filters": [],
+      "source": "sample"
+    },
+    {
+      "id": "cs_compression_breakout",
+      "name": "Compression Breakout",
+      "color": "#3b82f6",
+      "enabled": true,
+      "mode": "or",
+      "direction": "all",
+      "sessions": [
+        "rth"
+      ],
+      "repeat_sec": 300,
+      "and_window_min": 5,
+      "min_triggers": 2,
+      "size_hint": "half",
+      "triggers": [
+        {
+          "id": "range_break",
+          "options": [
+            "up",
+            "down"
+          ],
+          "params": {
+            "bars": 5.0,
+            "max_range_pct": 0.4,
+            "width_unit": 1.0,
+            "vol_min": 6.0,
+            "tf": 5.0
+          },
+          "repeat_sec": 0
+        }
+      ],
+      "notes": "A tight range that breaks with volume. The filters every alert must pass (relative volume, relative strength vs SPY, and more) are on the Parameters tab.",
+      "universe_profile": "up_liquid_movers",
+      "parameters": [
+        {
+          "id": "rvol",
+          "op": "gte",
+          "value": 1.0,
+          "option": "",
+          "params": {}
+        },
+        {
+          "id": "rrs_m5",
+          "op": "gt",
+          "value": 0.0,
+          "option": "trade",
+          "params": {}
+        }
+      ],
+      "parameter_set": "",
+      "pending_filters": [],
+      "source": "sample"
+    },
+    {
+      "id": "cs_ema_cross",
+      "name": "EMA Cross",
+      "color": "#3b82f6",
+      "enabled": true,
+      "mode": "or",
+      "direction": "all",
+      "sessions": [
+        "rth"
+      ],
+      "repeat_sec": 300,
+      "and_window_min": 5,
+      "min_triggers": 2,
+      "size_hint": "half",
+      "triggers": [
+        {
+          "id": "ema_cross_ema",
+          "options": [
+            "up",
+            "down"
+          ],
+          "params": {
+            "fast": 3.0,
+            "slow": 9.0,
+            "tf": 5.0
+          },
+          "repeat_sec": 0
+        }
+      ],
+      "notes": "A fast EMA crossing a slow EMA on the intraday chart. The filters every alert must pass (relative volume, relative strength vs SPY, and more) are on the Parameters tab.",
+      "universe_profile": "up_liquid_movers",
+      "parameters": [
+        {
+          "id": "rvol",
+          "op": "gte",
+          "value": 1.0,
+          "option": "",
+          "params": {}
+        },
+        {
+          "id": "rrs_m5",
+          "op": "gt",
+          "value": 0.0,
+          "option": "trade",
+          "params": {}
+        },
+        {
+          "id": "void_pct",
+          "op": "gte",
+          "value": 1.0,
+          "option": "",
+          "params": {}
+        },
+        {
+          "id": "dist_vwap_pct",
+          "op": "gte",
+          "value": 0,
+          "option": "trade",
+          "params": {}
+        },
+        {
+          "id": "market_align",
+          "op": "gte",
+          "value": 1,
+          "option": "",
+          "params": {
+            "from": 600.0
+          }
+        },
+        {
+          "id": "ema_stack",
+          "op": "gte",
+          "value": 0.0,
+          "option": "trade",
+          "params": {
+            "fast": 8.0,
+            "slow": 21.0,
+            "tf": 5.0
+          }
+        }
+      ],
+      "parameter_set": "",
+      "pending_filters": [],
+      "source": "sample"
+    },
+    {
+      "id": "cs_hod_highs",
+      "name": "HOD Breakout",
+      "color": "#4caf50",
+      "enabled": true,
+      "mode": "and",
+      "direction": "long",
+      "sessions": [
+        "rth"
+      ],
+      "repeat_sec": 30,
+      "and_window_min": 1,
+      "min_triggers": 2,
+      "size_hint": "half",
+      "triggers": [
+        {
+          "id": "hod",
+          "options": [
+            "high"
+          ],
+          "params": {},
+          "repeat_sec": 0
+        },
+        {
+          "id": "break_recent_high",
+          "options": [
+            "1",
+            "2",
+            "5",
+            "15"
+          ],
+          "params": {
+            "lookback": 5.0
+          },
+          "repeat_sec": 0
+        },
+        {
+          "id": "volume_spike",
+          "options": [
+            "5"
+          ],
+          "params": {
+            "ratio": 2.0,
+            "lookback": 10.0
+          },
+          "repeat_sec": 0
+        },
+        {
+          "id": "consec_candles",
+          "options": [
+            "green"
+          ],
+          "params": {
+            "count": 3.0,
+            "tf": 5.0
+          },
+          "repeat_sec": 0
+        }
+      ],
+      "notes": "All within 1 minute: a new high of day, breaking the 5-candle high on 1, 2, 5 and 15 min, a 5-min volume spike of at least 2x the last 10 candles, and 3 green 5-min candles.",
+      "universe_profile": "up_liquid_movers",
+      "parameters": [],
+      "parameter_set": "",
+      "pending_filters": [],
+      "source": "sample"
+    },
+    {
+      "id": "cs_key_level_cross",
+      "name": "Key Level Cross",
+      "color": "#ab47bc",
+      "enabled": true,
+      "mode": "or",
+      "direction": "all",
+      "sessions": [
+        "rth"
+      ],
+      "repeat_sec": 1800,
+      "and_window_min": 5,
+      "min_triggers": 2,
+      "size_hint": "half",
+      "triggers": [
+        {
+          "id": "cross_above",
+          "options": [
+            "sma50_d",
+            "sma200_d",
+            "prior_high",
+            "prior_low"
+          ],
+          "params": {
+            "tf": 5.0
+          },
+          "repeat_sec": 0
+        },
+        {
+          "id": "cross_below",
+          "options": [
+            "sma50_d",
+            "sma200_d",
+            "prior_high",
+            "prior_low"
+          ],
+          "params": {
+            "tf": 5.0
+          },
+          "repeat_sec": 0
+        }
+      ],
+      "notes": "A 5-minute candle closes through the daily SMA 50, SMA 200, prior day high or prior day low, with the last 5 minutes trading at least 1.5x the 10 blocks before. At most once every 30 minutes per stock, so a stock chopping around the line does not repeat. The SMAs need about a year of daily history loaded (--history-days).",
+      "universe_profile": "up_liquid_movers",
+      "parameters": [
+        {
+          "id": "rel_vol",
+          "op": "gte",
+          "value": 150.0,
+          "option": "5",
+          "params": {
+            "lookback": 10.0
+          }
+        }
+      ],
+      "parameter_set": "",
+      "pending_filters": [],
+      "source": "sample"
+    },
+    {
+      "id": "cs_lod_breakdown",
+      "name": "LOD Breakdown",
+      "color": "#ef5350",
+      "enabled": true,
+      "mode": "and",
+      "direction": "short",
+      "sessions": [
+        "rth"
+      ],
+      "repeat_sec": 30,
+      "and_window_min": 1,
+      "min_triggers": 2,
+      "size_hint": "half",
+      "triggers": [
+        {
+          "id": "hod",
+          "options": [
+            "low"
+          ],
+          "params": {},
+          "repeat_sec": 0
+        },
+        {
+          "id": "break_recent_low",
+          "options": [
+            "1",
+            "2",
+            "5",
+            "15"
+          ],
+          "params": {
+            "lookback": 5.0
+          },
+          "repeat_sec": 0
+        },
+        {
+          "id": "volume_spike",
+          "options": [
+            "5"
+          ],
+          "params": {
+            "ratio": 2.0,
+            "lookback": 10.0
+          },
+          "repeat_sec": 0
+        },
+        {
+          "id": "consec_candles",
+          "options": [
+            "red"
+          ],
+          "params": {
+            "count": 3.0,
+            "tf": 5.0
+          },
+          "repeat_sec": 0
+        }
+      ],
+      "notes": "Mirror of HOD Breakout. All within 1 minute: a new low of day, breaking the 5-candle low on 1, 2, 5 and 15 min, a 5-min volume spike of at least 2x the last 10 candles, and 3 red 5-min candles.",
+      "universe_profile": "up_liquid_movers",
+      "parameters": [],
+      "parameter_set": "",
+      "pending_filters": [],
+      "source": "sample"
+    },
+    {
+      "id": "cs_lod_lows",
+      "name": "5MIN LOD",
+      "color": "#ef5350",
+      "enabled": true,
+      "mode": "or",
+      "direction": "short",
+      "sessions": [
+        "rth"
+      ],
+      "repeat_sec": 0,
+      "and_window_min": 5,
+      "min_triggers": 2,
+      "size_hint": "half",
+      "triggers": [
+        {
+          "id": "break_recent_low",
+          "options": [
+            "5"
+          ],
+          "params": {
+            "lookback": 5.0
+          },
+          "repeat_sec": 0
+        }
+      ],
+      "notes": "Breaks under the lowest low of the last 5 completed 5-minute candles while the last 5 minutes trade at least 2x the average of the 10 five-minute blocks before. Mirror of 5MIN HOD.",
+      "universe_profile": "up_liquid_movers",
+      "parameters": [
+        {
+          "id": "rel_vol",
+          "op": "gte",
+          "value": 200.0,
+          "option": "5",
+          "params": {
+            "lookback": 10.0
+          }
+        }
+      ],
+      "parameter_set": "",
+      "pending_filters": [],
+      "source": "sample"
+    },
+    {
+      "id": "cs_new_hod",
+      "name": "New HOD",
+      "color": "#22c55e",
+      "enabled": true,
+      "mode": "or",
+      "direction": "long",
+      "sessions": [
+        "rth"
+      ],
+      "repeat_sec": 0,
+      "and_window_min": 5,
+      "size_hint": "half",
+      "triggers": [
+        {
+          "id": "hod",
+          "options": [
+            "high"
+          ],
+          "params": {},
+          "repeat_sec": 0
+        }
+      ],
+      "notes": "A new high of day. Deliberately bare: add parameters or a universe filter before relying on it.",
+      "universe_profile": "up_liquid_movers",
+      "parameters": [],
+      "pending_filters": [],
+      "source": "sample",
+      "parameter_set": ""
+    },
+    {
+      "id": "cs_new_lod",
+      "name": "New LOD",
+      "color": "#ef4444",
+      "enabled": true,
+      "mode": "or",
+      "direction": "short",
+      "sessions": [
+        "rth"
+      ],
+      "repeat_sec": 0,
+      "and_window_min": 5,
+      "size_hint": "half",
+      "triggers": [
+        {
+          "id": "hod",
+          "options": [
+            "low"
+          ],
+          "params": {},
+          "repeat_sec": 0
+        }
+      ],
+      "notes": "A new low of day. Deliberately bare: add parameters or a universe filter before relying on it.",
+      "universe_profile": "up_liquid_movers",
+      "parameters": [],
+      "pending_filters": [],
+      "source": "sample",
+      "parameter_set": ""
+    },
+    {
+      "id": "cs_orb",
+      "name": "ORB",
+      "color": "#3b82f6",
+      "enabled": true,
+      "mode": "or",
+      "direction": "all",
+      "sessions": [
+        "rth"
+      ],
+      "repeat_sec": 300,
+      "and_window_min": 5,
+      "min_triggers": 2,
+      "size_hint": "half",
+      "triggers": [
+        {
+          "id": "orb_breakout",
+          "options": [
+            "15"
+          ],
+          "params": {},
+          "repeat_sec": 0
+        },
+        {
+          "id": "orb_breakdown",
+          "options": [
+            "15"
+          ],
+          "params": {},
+          "repeat_sec": 0
+        }
+      ],
+      "notes": "Opening range breakout or breakdown on the 15-minute range. The filters every alert must pass (relative volume, relative strength vs SPY, and more) are on the Parameters tab.",
+      "universe_profile": "up_liquid_movers",
+      "parameters": [
+        {
+          "id": "rvol",
+          "op": "gte",
+          "value": 1.0,
+          "option": "",
+          "params": {}
+        },
+        {
+          "id": "rrs_m5",
+          "op": "gt",
+          "value": 0.0,
+          "option": "trade",
+          "params": {}
+        },
+        {
+          "id": "void_pct",
+          "op": "gte",
+          "value": 1.0,
+          "option": "",
+          "params": {}
+        },
+        {
+          "id": "dist_vwap_pct",
+          "op": "gte",
+          "value": 0,
+          "option": "trade",
+          "params": {}
+        },
+        {
+          "id": "market_align",
+          "op": "gte",
+          "value": 1,
+          "option": "",
+          "params": {
+            "from": 600.0
+          }
+        }
+      ],
+      "parameter_set": "",
+      "pending_filters": [],
+      "source": "sample"
+    },
+    {
+      "id": "cs_trend_watch",
+      "name": "Trend",
+      "color": "#ffa726",
+      "enabled": true,
+      "mode": "or",
+      "direction": "all",
+      "sessions": [
+        "rth"
+      ],
+      "repeat_sec": 3600,
+      "and_window_min": 5,
+      "min_triggers": 2,
+      "size_hint": "half",
+      "triggers": [
+        {
+          "id": "consec_candles",
+          "options": [
+            "green",
+            "red"
+          ],
+          "params": {
+            "count": 3.0,
+            "tf": 5.0
+          },
+          "repeat_sec": 0
+        }
+      ],
+      "notes": "Watchlist, not an entry signal: a stock in a clean intraday trend. Fires when the 3rd green (long) or red (short) 5-minute candle closes, from 10:30, when every 5-minute candle today closed on that side of VWAP and the last 3 closed on that side of EMA 9. Once an hour per stock.",
+      "universe_profile": "up_liquid_movers",
+      "parameters": [
+        {
+          "id": "time_et",
+          "op": "gte",
+          "value": 1030.0,
+          "option": "",
+          "params": {}
+        },
+        {
+          "id": "vwap_day_pct",
+          "op": "gte",
+          "value": 100,
+          "option": "trade",
+          "params": {
+            "tf": 5.0
+          }
+        },
+        {
+          "id": "ema_hold",
+          "op": "gte",
+          "value": 3.0,
+          "option": "trade",
+          "params": {
+            "period": 9.0,
+            "lookback": 3.0,
+            "tf": 5.0
+          }
+        }
+      ],
+      "parameter_set": "",
+      "pending_filters": [],
+      "source": "sample"
+    },
+    {
+      "id": "cs_vwap_cross",
+      "name": "VWAP Cross",
+      "color": "#3b82f6",
+      "enabled": true,
+      "mode": "or",
+      "direction": "all",
+      "sessions": [
+        "rth"
+      ],
+      "repeat_sec": 300,
+      "and_window_min": 5,
+      "min_triggers": 2,
+      "size_hint": "half",
+      "triggers": [
+        {
+          "id": "cross_above",
+          "options": [
+            "vwap"
+          ],
+          "params": {
+            "tf": 5.0
+          },
+          "repeat_sec": 0
+        },
+        {
+          "id": "cross_below",
+          "options": [
+            "vwap"
+          ],
+          "params": {
+            "tf": 5.0
+          },
+          "repeat_sec": 0
+        }
+      ],
+      "notes": "Price crossing VWAP with conviction. The filters every alert must pass (relative volume, relative strength vs SPY, and more) are on the Parameters tab.",
+      "universe_profile": "up_liquid_movers",
+      "parameters": [
+        {
+          "id": "rvol",
+          "op": "gte",
+          "value": 1.0,
+          "option": "",
+          "params": {}
+        },
+        {
+          "id": "rrs_m5",
+          "op": "gt",
+          "value": 0.0,
+          "option": "trade",
+          "params": {}
+        },
+        {
+          "id": "void_pct",
+          "op": "gte",
+          "value": 1.0,
+          "option": "",
+          "params": {}
+        },
+        {
+          "id": "dist_vwap_pct",
+          "op": "gte",
+          "value": 0,
+          "option": "trade",
+          "params": {}
+        },
+        {
+          "id": "market_align",
+          "op": "gte",
+          "value": 1,
+          "option": "",
+          "params": {
+            "from": 600.0
+          }
+        }
+      ],
+      "parameter_set": "",
+      "pending_filters": [],
+      "source": "sample"
+    },
+    {
+      "id": "cs_vwap_sr",
+      "name": "VWAP Support/Resistance",
+      "color": "#3b82f6",
+      "enabled": true,
+      "mode": "or",
+      "direction": "all",
+      "sessions": [
+        "rth"
+      ],
+      "repeat_sec": 300,
+      "and_window_min": 5,
+      "min_triggers": 2,
+      "size_hint": "half",
+      "triggers": [
+        {
+          "id": "vwap_support",
+          "options": [
+            "3"
+          ],
+          "params": {
+            "tol_pct": 3.0,
+            "tol_unit": 1.0
+          },
+          "repeat_sec": 0
+        },
+        {
+          "id": "vwap_resistance",
+          "options": [
+            "3"
+          ],
+          "params": {
+            "tol_pct": 3.0,
+            "tol_unit": 1.0
+          },
+          "repeat_sec": 0
+        }
+      ],
+      "notes": "VWAP acting as support (long) or resistance (short) over the last few 5-minute candles. The filters every alert must pass (relative volume, relative strength vs SPY, and more) are on the Parameters tab.",
+      "universe_profile": "up_liquid_movers",
+      "parameters": [
+        {
+          "id": "rvol",
+          "op": "gte",
+          "value": 1.0,
+          "option": "",
+          "params": {}
+        },
+        {
+          "id": "rrs_m5",
+          "op": "gt",
+          "value": 0.0,
+          "option": "trade",
+          "params": {}
+        },
+        {
+          "id": "ema_stack",
+          "op": "gte",
+          "value": 0.0,
+          "option": "trade",
+          "params": {
+            "fast": 8.0,
+            "slow": 21.0,
+            "tf": 5.0
+          }
+        },
+        {
+          "id": "vwap_hold",
+          "op": "gte",
+          "value": 4.0,
+          "option": "trade",
+          "params": {
+            "lookback": 5.0,
+            "tf": 5.0
+          }
+        }
+      ],
+      "parameter_set": "",
+      "pending_filters": [],
+      "source": "sample"
+    },
+    {
+      "id": "cs_vwap_v_resistance",
+      "name": "V off VWAP (resistance)",
+      "color": "#f97316",
+      "enabled": true,
+      "mode": "or",
+      "direction": "short",
+      "sessions": [
+        "rth"
+      ],
+      "repeat_sec": 0,
+      "and_window_min": 5,
+      "min_triggers": 2,
+      "size_hint": "half",
+      "triggers": [
+        {
+          "id": "vwap_v",
+          "options": [
+            "resistance"
+          ],
+          "params": {
+            "tf": 5.0,
+            "lookback": 6.0,
+            "away_atr": 0.3,
+            "band_atr": 0.1,
+            "max_dwell": 1.0
+          },
+          "repeat_sec": 0
+        }
+      ],
+      "notes": "A sharp V into VWAP and straight back out. Price came from at least 0.3 daily ATR away, at most one earlier candle closed near VWAP, and the touch candle closed back clearly on the right side as a strong candle.",
+      "universe_profile": "up_liquid_movers",
+      "parameters": [],
+      "parameter_set": "",
+      "pending_filters": [],
+      "source": "sample"
+    },
+    {
+      "id": "cs_vwap_v_support",
+      "name": "V off VWAP (support)",
+      "color": "#14b8a6",
+      "enabled": true,
+      "mode": "or",
+      "direction": "long",
+      "sessions": [
+        "rth"
+      ],
+      "repeat_sec": 0,
+      "and_window_min": 5,
+      "min_triggers": 2,
+      "size_hint": "half",
+      "triggers": [
+        {
+          "id": "vwap_v",
+          "options": [
+            "support"
+          ],
+          "params": {
+            "tf": 5.0,
+            "lookback": 6.0,
+            "away_atr": 0.3,
+            "band_atr": 0.1,
+            "max_dwell": 1.0
+          },
+          "repeat_sec": 0
+        }
+      ],
+      "notes": "A sharp V into VWAP and straight back out. Price came from at least 0.3 daily ATR away, at most one earlier candle closed near VWAP, and the touch candle closed back clearly on the right side as a strong candle.",
+      "universe_profile": "up_liquid_movers",
+      "parameters": [],
+      "parameter_set": "",
+      "pending_filters": [],
+      "source": "sample"
+    }
+  ]
+}

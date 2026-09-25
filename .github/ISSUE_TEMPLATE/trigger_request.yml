@@ -1,0 +1,44 @@
+name: Trigger or condition request
+description: Ask for a specific alert pattern or filter to be added to the catalog.
+labels: [enhancement, catalog]
+body:
+  - type: markdown
+    attributes:
+      value: |
+        Setups are composed in the dashboard from the trigger catalog and the condition list, so a
+        new pattern usually means one new trigger or condition that everyone can reuse.
+  - type: input
+    id: name
+    attributes:
+      label: Name
+      placeholder: Opening range retest
+    validations:
+      required: true
+  - type: dropdown
+    id: kind
+    attributes:
+      label: Trigger or condition
+      options:
+        - Trigger (fires the alert)
+        - Condition (filters when a setup may fire)
+    validations:
+      required: true
+  - type: textarea
+    id: rule
+    attributes:
+      label: The rule, bar by bar
+      description: Which timeframe, what must be true on which bar, and the exact bar it fires on.
+    validations:
+      required: true
+  - type: textarea
+    id: params
+    attributes:
+      label: Settings a user should be able to change
+      placeholder: |
+        lookback: 5 candles (2 to 50)
+        threshold: 2.0x (0.5 to 20)
+  - type: textarea
+    id: notfire
+    attributes:
+      label: When it must not fire
+      description: The near misses. This is what the test will check.

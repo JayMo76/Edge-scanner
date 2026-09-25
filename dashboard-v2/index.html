@@ -1,0 +1,21 @@
+<!doctype html>
+<html lang="en" data-theme="navy">
+  <head>
+    <meta charset="UTF-8" />
+    <link rel="icon" type="image/svg+xml" href="/v2/favicon.svg" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Edge Scanner</title>
+    <script>
+      // Apply persisted theme before first paint (avoids flash). V2 has its own
+      // key: V1 only knows graphite / warm / daylight.
+      try {
+        var t = localStorage.getItem('scanner-v2-theme');
+        if (t === 'daylight' || t === 'navy') document.documentElement.setAttribute('data-theme', t);
+      } catch (e) {}
+    </script>
+  </head>
+  <body>
+    <div id="root"></div>
+    <script type="module" src="/src/main.tsx"></script>
+  </body>
+</html>

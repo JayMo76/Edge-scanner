@@ -1,0 +1,28 @@
+# Secrets
+.env
+
+# Runtime data: caches, settings, setups, alert archives (all under data/)
+/data/
+
+# Runtime logs, written by the live scanner every session
+logs/
+
+# Python
+__pycache__/
+*.pyc
+.venv/
+venv/
+*.egg-info/
+.pytest_cache/
+
+# Dashboard
+dashboard-v2/node_modules/
+dashboard-v2/dist/
+
+# Tooling
+.claude/
+
+# local databases (none ship with the project; a provider library may write one)
+*.db
+*.db-wal
+*.db-shm

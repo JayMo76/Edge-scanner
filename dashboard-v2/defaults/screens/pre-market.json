@@ -1,0 +1,198 @@
+{
+  "id": "pre-market",
+  "name": "Pre-Market",
+  "version": 1,
+  "createdAt": "2026-09-19T00:00:00Z",
+  "updatedAt": "2026-09-19T00:00:00Z",
+  "locked": false,
+  "layout": [
+    {
+      "i": "pmg",
+      "x": 0,
+      "y": 0,
+      "w": 0.24,
+      "h": 0.498,
+      "z": 1,
+      "minW": 0.1562,
+      "minH": 0.1441
+    },
+    {
+      "i": "pml",
+      "x": 0,
+      "y": 0.502,
+      "w": 0.24,
+      "h": 0.498,
+      "z": 2,
+      "minW": 0.1562,
+      "minH": 0.1441
+    },
+    {
+      "i": "pmv",
+      "x": 0.244,
+      "y": 0,
+      "w": 0.24,
+      "h": 0.498,
+      "z": 3,
+      "minW": 0.1562,
+      "minH": 0.1441
+    },
+    {
+      "i": "info1",
+      "x": 0.244,
+      "y": 0.502,
+      "w": 0.24,
+      "h": 0.498,
+      "z": 4,
+      "minW": 0.1562,
+      "minH": 0.1441
+    },
+    {
+      "i": "c5",
+      "x": 0.488,
+      "y": 0,
+      "w": 0.512,
+      "h": 0.54,
+      "z": 5,
+      "minW": 0.2188,
+      "minH": 0.1729
+    },
+    {
+      "i": "cd",
+      "x": 0.488,
+      "y": 0.544,
+      "w": 0.254,
+      "h": 0.456,
+      "z": 6,
+      "minW": 0.2188,
+      "minH": 0.1729
+    },
+    {
+      "i": "news1",
+      "x": 0.746,
+      "y": 0.544,
+      "w": 0.254,
+      "h": 0.456,
+      "z": 7,
+      "minW": 0.2188,
+      "minH": 0.1441
+    }
+  ],
+  "windows": {
+    "pmg": {
+      "id": "pmg",
+      "type": "toplist",
+      "link": "red",
+      "muted": false,
+      "sound": {
+        "tone": "off",
+        "tts": false
+      },
+      "list": "pm_gainers",
+      "limit": 25,
+      "heat": true
+    },
+    "pml": {
+      "id": "pml",
+      "type": "toplist",
+      "link": "red",
+      "muted": false,
+      "sound": {
+        "tone": "off",
+        "tts": false
+      },
+      "list": "pm_losers",
+      "limit": 25,
+      "heat": true
+    },
+    "pmv": {
+      "id": "pmv",
+      "type": "toplist",
+      "link": "red",
+      "muted": false,
+      "sound": {
+        "tone": "off",
+        "tts": false
+      },
+      "list": "pm_volume",
+      "limit": 25,
+      "heat": true
+    },
+    "news1": {
+      "id": "news1",
+      "type": "news",
+      "link": "red",
+      "muted": false,
+      "sound": {
+        "tone": "off",
+        "tts": false
+      },
+      "mode": "linked",
+      "symbol": null,
+      "hours": 24,
+      "limit": 50,
+      "thumbnails": true
+    },
+    "info1": {
+      "id": "info1",
+      "type": "stockinfo",
+      "link": "red",
+      "muted": false,
+      "sound": {
+        "tone": "off",
+        "tts": false
+      },
+      "symbol": null
+    },
+    "c5": {
+      "id": "c5",
+      "type": "chart",
+      "link": "red",
+      "muted": false,
+      "sound": {
+        "tone": "off",
+        "tts": false
+      },
+      "title": "Chart (with pre-market)",
+      "symbol": "SPY",
+      "timeframe": "5m",
+      "extended": true,
+      "overlays": {
+        "vwap": true,
+        "ema9": true,
+        "ema21": true,
+        "volume": true,
+        "sma50": false,
+        "sma100": false,
+        "sma200": false,
+        "pdHL": true,
+        "pmHL": true
+      }
+    },
+    "cd": {
+      "id": "cd",
+      "type": "chart",
+      "link": "red",
+      "muted": false,
+      "sound": {
+        "tone": "off",
+        "tts": false
+      },
+      "title": "Daily",
+      "symbol": "SPY",
+      "timeframe": "1D",
+      "extended": false,
+      "overlays": {
+        "vwap": false,
+        "ema9": false,
+        "ema21": false,
+        "volume": true,
+        "sma50": true,
+        "sma100": false,
+        "sma200": true,
+        "pdHL": false,
+        "pmHL": false
+      }
+    }
+  },
+  "grid": 3
+}

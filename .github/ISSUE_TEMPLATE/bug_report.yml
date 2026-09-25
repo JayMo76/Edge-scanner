@@ -1,0 +1,73 @@
+name: Bug report
+description: Something is broken, or an alert or number looks wrong.
+labels: [bug]
+body:
+  - type: markdown
+    attributes:
+      value: |
+        Thanks for reporting. **Do not paste API keys, account numbers or your `.env`.**
+        Invented or redacted values are fine.
+  - type: textarea
+    id: what
+    attributes:
+      label: What happened
+      description: What you did, what you expected, and what you saw instead.
+    validations:
+      required: true
+  - type: textarea
+    id: steps
+    attributes:
+      label: Steps to reproduce
+      placeholder: |
+        1. Build a setup with the trigger ...
+        2. Point it at the universe filter ...
+        3. At 10:05 ET on SYMBOL it ...
+    validations:
+      required: true
+  - type: dropdown
+    id: area
+    attributes:
+      label: Area
+      options:
+        - A setup fired when it should not have, or did not fire
+        - Triggers, conditions or universe filters
+        - Dashboard windows, screens or charts
+        - Market data, history or the startup warmup
+        - The alert WebSocket feed
+        - Install or startup
+        - Other
+    validations:
+      required: true
+  - type: dropdown
+    id: provider
+    attributes:
+      label: Data provider
+      options:
+        - Alpaca (SIP)
+        - Alpaca (IEX)
+        - Charles Schwab
+        - Not data related
+    validations:
+      required: true
+  - type: textarea
+    id: setup
+    attributes:
+      label: The setup or window involved
+      description: Paste the setup's JSON from Config, or describe the window's settings. Remove anything private.
+      render: json
+  - type: textarea
+    id: logs
+    attributes:
+      label: Console output
+      description: The scanner's terminal output around the problem. Check it for keys before pasting.
+      render: shell
+  - type: input
+    id: version
+    attributes:
+      label: Version
+      placeholder: release tag, or the commit you are on
+  - type: input
+    id: os
+    attributes:
+      label: OS and Python version
+      placeholder: Windows 11, Python 3.12

@@ -1,0 +1,10 @@
+{
+ "_comment": [
+  "Seeded once, on first run, only when data/setups/paramsets/ is empty.",
+  "",
+  "Deliberately empty: each setup carries its own parameters, so every",
+  "condition it applies is visible on that setup. The engine still accepts",
+  "a parameter_set on a setup document; the dashboard no longer offers one."
+ ],
+ "profiles": []
+}

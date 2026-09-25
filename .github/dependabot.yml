@@ -1,0 +1,28 @@
+# Weekly dependency updates, grouped so each ecosystem arrives as one pull request.
+# Security updates still open immediately. CI runs on Node 24 (npm 11), the same npm Dependabot
+# uses to write package-lock.json, so its lock files pass `npm ci`.
+version: 2
+updates:
+  - package-ecosystem: npm
+    directory: /dashboard-v2
+    schedule:
+      interval: weekly
+    open-pull-requests-limit: 5
+    groups:
+      dashboard:
+        patterns: ["*"]
+        update-types: [minor, patch]
+
+  - package-ecosystem: pip
+    directory: /
+    schedule:
+      interval: weekly
+    groups:
+      scanner:
+        patterns: ["*"]
+        update-types: [minor, patch]
+
+  - package-ecosystem: github-actions
+    directory: /
+    schedule:
+      interval: monthly

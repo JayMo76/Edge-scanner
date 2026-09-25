@@ -1,0 +1,26 @@
+This project is licensed under the MIT License (see LICENSE).
+
+It includes or depends on third-party software with its own licenses:
+
+TradingView Lightweight Charts (dashboard-v2, via npm "lightweight-charts")
+  Copyright (c) 2024 TradingView, Inc.
+  Licensed under the Apache License, Version 2.0.
+  https://github.com/tradingview/lightweight-charts
+  The charts are rendered with TradingView Lightweight Charts(TM). The library's
+  attribution logo is left enabled, as its license notice requires.
+
+Schwabdev (scanner/data/schwab.py, via pip "schwabdev")
+  Copyright (c) Tyler Bowers.
+  Licensed under the MIT License.
+  https://github.com/tylerebowers/Schwabdev
+  The Charles Schwab provider talks to Schwab's API through this library, which
+  also handles the OAuth login and stores the tokens. It is an independent
+  project, not affiliated with Charles Schwab.
+
+Other runtime dependencies are listed in requirements.txt and
+dashboard-v2/package.json and are distributed under their own permissive
+licenses (MIT, BSD, Apache-2.0 or PSF).
+
+Market data and news are fetched at run time from the user's own accounts and
+from public feeds (Alpaca Markets, Yahoo Finance, Nasdaq, yfinance). They are
+not part of this distribution and are subject to their providers' terms.

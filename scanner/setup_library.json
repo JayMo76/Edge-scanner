@@ -1,0 +1,1251 @@
+{
+  "_comment": [
+    "The setup library: ready-made custom setups you can install and edit.",
+    "custom_setups_defaults.json only seeds an EMPTY install, so these are installed by",
+    "scripts/install_setup_library.py, which adds ids that are missing and never overwrites",
+    "a setup that already exists (edits made in the Setups panel survive a re-run)."
+  ],
+  "setups": [
+    {
+      "id": "cs_lib_gap_up_volume",
+      "name": "Gap Up on Volume",
+      "color": "#22c55e",
+      "enabled": true,
+      "mode": "or",
+      "direction": "long",
+      "sessions": [
+        "rth"
+      ],
+      "repeat_sec": 900,
+      "size_hint": "half",
+      "source": "library",
+      "universe_profile": "up_price_1",
+      "triggers": [
+        {
+          "id": "rvol_cross",
+          "options": [],
+          "params": {
+            "threshold": 2.0
+          },
+          "repeat_sec": 0
+        },
+        {
+          "id": "break_recent_high",
+          "options": [
+            "5"
+          ],
+          "params": {
+            "lookback": 5
+          },
+          "repeat_sec": 0
+        },
+        {
+          "id": "hod",
+          "options": [
+            "high"
+          ],
+          "params": {},
+          "repeat_sec": 0
+        }
+      ],
+      "parameters": [
+        {
+          "id": "gap_pct",
+          "op": "gte",
+          "value": 4,
+          "option": "signed",
+          "params": {}
+        },
+        {
+          "id": "rvol",
+          "op": "gte",
+          "value": 2,
+          "option": "",
+          "params": {}
+        },
+        {
+          "id": "session_volume",
+          "op": "gte",
+          "value": 500000,
+          "option": "",
+          "params": {}
+        },
+        {
+          "id": "time_et",
+          "op": "gte",
+          "value": 935,
+          "option": "",
+          "params": {}
+        }
+      ],
+      "notes": "Gapped up hard and the volume is real. Fires on RVOL crossing 2x, a new high of day, or a 5 min breakout."
+    },
+    {
+      "id": "cs_lib_gap_down_volume",
+      "name": "Gap Down on Volume",
+      "color": "#ef4444",
+      "enabled": true,
+      "mode": "or",
+      "direction": "short",
+      "sessions": [
+        "rth"
+      ],
+      "repeat_sec": 900,
+      "size_hint": "half",
+      "source": "library",
+      "universe_profile": "up_price_1",
+      "triggers": [
+        {
+          "id": "rvol_cross",
+          "options": [],
+          "params": {
+            "threshold": 2.0
+          },
+          "repeat_sec": 0
+        },
+        {
+          "id": "break_recent_low",
+          "options": [
+            "5"
+          ],
+          "params": {
+            "lookback": 5
+          },
+          "repeat_sec": 0
+        },
+        {
+          "id": "hod",
+          "options": [
+            "low"
+          ],
+          "params": {},
+          "repeat_sec": 0
+        }
+      ],
+      "parameters": [
+        {
+          "id": "gap_pct",
+          "op": "lte",
+          "value": -4,
+          "option": "signed",
+          "params": {}
+        },
+        {
+          "id": "rvol",
+          "op": "gte",
+          "value": 2,
+          "option": "",
+          "params": {}
+        },
+        {
+          "id": "session_volume",
+          "op": "gte",
+          "value": 500000,
+          "option": "",
+          "params": {}
+        },
+        {
+          "id": "time_et",
+          "op": "gte",
+          "value": 935,
+          "option": "",
+          "params": {}
+        }
+      ],
+      "notes": "Gapped down hard on real volume. Fires on RVOL crossing 2x, a new low of day, or a 5 min breakdown."
+    },
+    {
+      "id": "cs_lib_gap_up_holding",
+      "name": "Gap Up Holding",
+      "color": "#22c55e",
+      "enabled": true,
+      "mode": "or",
+      "direction": "long",
+      "sessions": [
+        "rth"
+      ],
+      "repeat_sec": 900,
+      "size_hint": "half",
+      "source": "library",
+      "universe_profile": "up_liquid_movers",
+      "triggers": [
+        {
+          "id": "cross_above",
+          "options": [
+            "vwap"
+          ],
+          "params": {
+            "tf": 5
+          },
+          "repeat_sec": 0
+        },
+        {
+          "id": "break_recent_high",
+          "options": [
+            "5"
+          ],
+          "params": {
+            "lookback": 5
+          },
+          "repeat_sec": 0
+        },
+        {
+          "id": "hod",
+          "options": [
+            "high"
+          ],
+          "params": {},
+          "repeat_sec": 0
+        }
+      ],
+      "parameters": [
+        {
+          "id": "gap_pct",
+          "op": "gte",
+          "value": 2,
+          "option": "signed",
+          "params": {}
+        },
+        {
+          "id": "dist_vwap_pct",
+          "op": "gte",
+          "value": 0.1,
+          "option": "above",
+          "params": {}
+        },
+        {
+          "id": "mom_15m_pct",
+          "op": "gte",
+          "value": 0.1,
+          "option": "signed",
+          "params": {}
+        },
+        {
+          "id": "rvol",
+          "op": "gte",
+          "value": 1,
+          "option": "",
+          "params": {}
+        },
+        {
+          "id": "time_et",
+          "op": "gte",
+          "value": 935,
+          "option": "",
+          "params": {}
+        }
+      ],
+      "notes": "Gap up that is being bought: above VWAP with the last 15 minutes pointing up."
+    },
+    {
+      "id": "cs_lib_gap_up_fading",
+      "name": "Gap Up Fading",
+      "color": "#ef4444",
+      "enabled": true,
+      "mode": "or",
+      "direction": "short",
+      "sessions": [
+        "rth"
+      ],
+      "repeat_sec": 900,
+      "size_hint": "half",
+      "source": "library",
+      "universe_profile": "up_liquid_movers",
+      "triggers": [
+        {
+          "id": "cross_below",
+          "options": [
+            "vwap"
+          ],
+          "params": {
+            "tf": 5
+          },
+          "repeat_sec": 0
+        },
+        {
+          "id": "break_recent_low",
+          "options": [
+            "5"
+          ],
+          "params": {
+            "lookback": 5
+          },
+          "repeat_sec": 0
+        },
+        {
+          "id": "hod",
+          "options": [
+            "low"
+          ],
+          "params": {},
+          "repeat_sec": 0
+        }
+      ],
+      "parameters": [
+        {
+          "id": "gap_pct",
+          "op": "gte",
+          "value": 2,
+          "option": "signed",
+          "params": {}
+        },
+        {
+          "id": "dist_vwap_pct",
+          "op": "gte",
+          "value": 0.1,
+          "option": "below",
+          "params": {}
+        },
+        {
+          "id": "mom_15m_pct",
+          "op": "lte",
+          "value": -0.1,
+          "option": "signed",
+          "params": {}
+        },
+        {
+          "id": "rvol",
+          "op": "gte",
+          "value": 1,
+          "option": "",
+          "params": {}
+        },
+        {
+          "id": "time_et",
+          "op": "gte",
+          "value": 935,
+          "option": "",
+          "params": {}
+        }
+      ],
+      "notes": "Gap up that is being sold: lost VWAP and the last 15 minutes are pointing down."
+    },
+    {
+      "id": "cs_lib_gap_down_recovering",
+      "name": "Gap Down Recovering",
+      "color": "#22c55e",
+      "enabled": true,
+      "mode": "or",
+      "direction": "long",
+      "sessions": [
+        "rth"
+      ],
+      "repeat_sec": 900,
+      "size_hint": "half",
+      "source": "library",
+      "universe_profile": "up_liquid_movers",
+      "triggers": [
+        {
+          "id": "cross_above",
+          "options": [
+            "vwap"
+          ],
+          "params": {
+            "tf": 5
+          },
+          "repeat_sec": 0
+        },
+        {
+          "id": "break_recent_high",
+          "options": [
+            "5"
+          ],
+          "params": {
+            "lookback": 5
+          },
+          "repeat_sec": 0
+        },
+        {
+          "id": "hod",
+          "options": [
+            "high"
+          ],
+          "params": {},
+          "repeat_sec": 0
+        }
+      ],
+      "parameters": [
+        {
+          "id": "gap_pct",
+          "op": "lte",
+          "value": -2,
+          "option": "signed",
+          "params": {}
+        },
+        {
+          "id": "dist_vwap_pct",
+          "op": "gte",
+          "value": 0.1,
+          "option": "above",
+          "params": {}
+        },
+        {
+          "id": "mom_15m_pct",
+          "op": "gte",
+          "value": 0.1,
+          "option": "signed",
+          "params": {}
+        },
+        {
+          "id": "rvol",
+          "op": "gte",
+          "value": 1,
+          "option": "",
+          "params": {}
+        },
+        {
+          "id": "time_et",
+          "op": "gte",
+          "value": 935,
+          "option": "",
+          "params": {}
+        }
+      ],
+      "notes": "Gap down that is being bought back: above VWAP with 15 minute momentum, working on the fill."
+    },
+    {
+      "id": "cs_lib_gap_down_extending",
+      "name": "Gap Down Extending",
+      "color": "#ef4444",
+      "enabled": true,
+      "mode": "or",
+      "direction": "short",
+      "sessions": [
+        "rth"
+      ],
+      "repeat_sec": 900,
+      "size_hint": "half",
+      "source": "library",
+      "universe_profile": "up_liquid_movers",
+      "triggers": [
+        {
+          "id": "cross_below",
+          "options": [
+            "vwap"
+          ],
+          "params": {
+            "tf": 5
+          },
+          "repeat_sec": 0
+        },
+        {
+          "id": "break_recent_low",
+          "options": [
+            "5"
+          ],
+          "params": {
+            "lookback": 5
+          },
+          "repeat_sec": 0
+        },
+        {
+          "id": "hod",
+          "options": [
+            "low"
+          ],
+          "params": {},
+          "repeat_sec": 0
+        }
+      ],
+      "parameters": [
+        {
+          "id": "gap_pct",
+          "op": "lte",
+          "value": -2,
+          "option": "signed",
+          "params": {}
+        },
+        {
+          "id": "dist_vwap_pct",
+          "op": "gte",
+          "value": 0.1,
+          "option": "below",
+          "params": {}
+        },
+        {
+          "id": "mom_15m_pct",
+          "op": "lte",
+          "value": -0.1,
+          "option": "signed",
+          "params": {}
+        },
+        {
+          "id": "rvol",
+          "op": "gte",
+          "value": 1,
+          "option": "",
+          "params": {}
+        },
+        {
+          "id": "time_et",
+          "op": "gte",
+          "value": 935,
+          "option": "",
+          "params": {}
+        }
+      ],
+      "notes": "Gap down that is still being sold: below VWAP, momentum down. Short it, do not catch it."
+    },
+    {
+      "id": "cs_lib_strong_stock_pullback",
+      "name": "Strong Stock Pullback",
+      "color": "#22c55e",
+      "enabled": true,
+      "mode": "or",
+      "direction": "long",
+      "sessions": [
+        "rth"
+      ],
+      "repeat_sec": 1800,
+      "size_hint": "half",
+      "source": "library",
+      "universe_profile": "up_liquid_movers",
+      "triggers": [
+        {
+          "id": "cross_above",
+          "options": [
+            "vwap"
+          ],
+          "params": {
+            "tf": 5
+          },
+          "repeat_sec": 0
+        },
+        {
+          "id": "bull_engulfing",
+          "options": [
+            "5"
+          ],
+          "params": {},
+          "repeat_sec": 0
+        }
+      ],
+      "parameters": [
+        {
+          "id": "rrs_d1",
+          "op": "gte",
+          "value": 1.5,
+          "option": "trade",
+          "params": {}
+        },
+        {
+          "id": "rrs_m5",
+          "op": "lte",
+          "value": -1.0,
+          "option": "trade",
+          "params": {}
+        },
+        {
+          "id": "rvol",
+          "op": "gte",
+          "value": 1.0,
+          "option": "",
+          "params": {}
+        },
+        {
+          "id": "time_et",
+          "op": "gte",
+          "value": 1030,
+          "option": "",
+          "params": {}
+        }
+      ],
+      "notes": "A daily leader that is weak this hour, turning back up. The pullback in a strong stock."
+    },
+    {
+      "id": "cs_lib_weak_stock_bounce",
+      "name": "Weak Stock Bounce",
+      "color": "#ef4444",
+      "enabled": true,
+      "mode": "or",
+      "direction": "short",
+      "sessions": [
+        "rth"
+      ],
+      "repeat_sec": 1800,
+      "size_hint": "half",
+      "source": "library",
+      "universe_profile": "up_liquid_movers",
+      "triggers": [
+        {
+          "id": "cross_below",
+          "options": [
+            "ema9_5"
+          ],
+          "params": {
+            "tf": 5
+          },
+          "repeat_sec": 0
+        },
+        {
+          "id": "cross_below",
+          "options": [
+            "vwap"
+          ],
+          "params": {
+            "tf": 5
+          },
+          "repeat_sec": 0
+        },
+        {
+          "id": "bear_engulfing",
+          "options": [
+            "5"
+          ],
+          "params": {},
+          "repeat_sec": 0
+        },
+        {
+          "id": "break_recent_low",
+          "options": [
+            "5"
+          ],
+          "params": {
+            "lookback": 3
+          },
+          "repeat_sec": 0
+        }
+      ],
+      "parameters": [
+        {
+          "id": "rrs_d1",
+          "op": "gte",
+          "value": 0.75,
+          "option": "trade",
+          "params": {}
+        },
+        {
+          "id": "rrs_m5",
+          "op": "lte",
+          "value": -0.5,
+          "option": "trade",
+          "params": {}
+        },
+        {
+          "id": "rvol",
+          "op": "gte",
+          "value": 1.0,
+          "option": "",
+          "params": {}
+        },
+        {
+          "id": "time_et",
+          "op": "gte",
+          "value": 1030,
+          "option": "",
+          "params": {}
+        }
+      ],
+      "notes": "A daily laggard bouncing hard this hour, rolling back over. The rally you short."
+    },
+    {
+      "id": "cs_lib_rs_rising",
+      "name": "Relative Strength Rising",
+      "color": "#22c55e",
+      "enabled": true,
+      "mode": "or",
+      "direction": "long",
+      "sessions": [
+        "rth"
+      ],
+      "repeat_sec": 1800,
+      "size_hint": "half",
+      "source": "library",
+      "universe_profile": "up_liquid_movers",
+      "triggers": [
+        {
+          "id": "break_recent_high",
+          "options": [
+            "5"
+          ],
+          "params": {
+            "lookback": 5
+          },
+          "repeat_sec": 0
+        },
+        {
+          "id": "hod",
+          "options": [
+            "high"
+          ],
+          "params": {},
+          "repeat_sec": 0
+        }
+      ],
+      "parameters": [
+        {
+          "id": "rrs_slope",
+          "op": "gte",
+          "value": 0.5,
+          "option": "trade",
+          "params": {
+            "bars": 3
+          }
+        },
+        {
+          "id": "rrs_m5",
+          "op": "gte",
+          "value": 1.0,
+          "option": "trade",
+          "params": {}
+        },
+        {
+          "id": "rvol",
+          "op": "gte",
+          "value": 1.0,
+          "option": "",
+          "params": {}
+        },
+        {
+          "id": "time_et",
+          "op": "gte",
+          "value": 1030,
+          "option": "",
+          "params": {}
+        }
+      ],
+      "notes": "Relative strength vs SPY is positive and building over the last 15 minutes."
+    },
+    {
+      "id": "cs_lib_rs_falling",
+      "name": "Relative Strength Falling",
+      "color": "#ef4444",
+      "enabled": true,
+      "mode": "or",
+      "direction": "short",
+      "sessions": [
+        "rth"
+      ],
+      "repeat_sec": 1800,
+      "size_hint": "half",
+      "source": "library",
+      "universe_profile": "up_liquid_movers",
+      "triggers": [
+        {
+          "id": "break_recent_low",
+          "options": [
+            "5"
+          ],
+          "params": {
+            "lookback": 5
+          },
+          "repeat_sec": 0
+        },
+        {
+          "id": "hod",
+          "options": [
+            "low"
+          ],
+          "params": {},
+          "repeat_sec": 0
+        }
+      ],
+      "parameters": [
+        {
+          "id": "rrs_slope",
+          "op": "gte",
+          "value": 0.5,
+          "option": "trade",
+          "params": {
+            "bars": 3
+          }
+        },
+        {
+          "id": "rrs_m5",
+          "op": "gte",
+          "value": 1.0,
+          "option": "trade",
+          "params": {}
+        },
+        {
+          "id": "rvol",
+          "op": "gte",
+          "value": 1.0,
+          "option": "",
+          "params": {}
+        },
+        {
+          "id": "time_et",
+          "op": "gte",
+          "value": 1030,
+          "option": "",
+          "params": {}
+        }
+      ],
+      "notes": "Relative weakness vs SPY is negative and getting worse over the last 15 minutes."
+    },
+    {
+      "id": "cs_lib_rs_leaders",
+      "name": "RS Leaders",
+      "color": "#22c55e",
+      "enabled": true,
+      "mode": "or",
+      "direction": "long",
+      "sessions": [
+        "rth"
+      ],
+      "repeat_sec": 900,
+      "size_hint": "half",
+      "source": "library",
+      "universe_profile": "up_liquid_movers",
+      "triggers": [
+        {
+          "id": "break_recent_high",
+          "options": [
+            "5"
+          ],
+          "params": {
+            "lookback": 5
+          },
+          "repeat_sec": 0
+        },
+        {
+          "id": "hod",
+          "options": [
+            "high"
+          ],
+          "params": {},
+          "repeat_sec": 0
+        },
+        {
+          "id": "cross_above",
+          "options": [
+            "vwap"
+          ],
+          "params": {
+            "tf": 5
+          },
+          "repeat_sec": 0
+        }
+      ],
+      "parameters": [
+        {
+          "id": "rrs_m5",
+          "op": "gte",
+          "value": 2.0,
+          "option": "trade",
+          "params": {}
+        },
+        {
+          "id": "rrs_d1",
+          "op": "gte",
+          "value": 0.0,
+          "option": "trade",
+          "params": {}
+        },
+        {
+          "id": "rvol",
+          "op": "gte",
+          "value": 1.0,
+          "option": "",
+          "params": {}
+        },
+        {
+          "id": "time_et",
+          "op": "gte",
+          "value": 1030,
+          "option": "",
+          "params": {}
+        }
+      ],
+      "notes": "The strongest names vs SPY over the past hour, on a daily chart that agrees, making a new push."
+    },
+    {
+      "id": "cs_lib_rs_laggards",
+      "name": "RS Laggards",
+      "color": "#ef4444",
+      "enabled": true,
+      "mode": "or",
+      "direction": "short",
+      "sessions": [
+        "rth"
+      ],
+      "repeat_sec": 900,
+      "size_hint": "half",
+      "source": "library",
+      "universe_profile": "up_liquid_movers",
+      "triggers": [
+        {
+          "id": "break_recent_low",
+          "options": [
+            "5"
+          ],
+          "params": {
+            "lookback": 5
+          },
+          "repeat_sec": 0
+        },
+        {
+          "id": "hod",
+          "options": [
+            "low"
+          ],
+          "params": {},
+          "repeat_sec": 0
+        },
+        {
+          "id": "cross_below",
+          "options": [
+            "vwap"
+          ],
+          "params": {
+            "tf": 5
+          },
+          "repeat_sec": 0
+        }
+      ],
+      "parameters": [
+        {
+          "id": "rrs_m5",
+          "op": "gte",
+          "value": 2.0,
+          "option": "trade",
+          "params": {}
+        },
+        {
+          "id": "rrs_d1",
+          "op": "gte",
+          "value": 0.0,
+          "option": "trade",
+          "params": {}
+        },
+        {
+          "id": "rvol",
+          "op": "gte",
+          "value": 1.0,
+          "option": "",
+          "params": {}
+        },
+        {
+          "id": "time_et",
+          "op": "gte",
+          "value": 1030,
+          "option": "",
+          "params": {}
+        }
+      ],
+      "notes": "The weakest names vs SPY over the past hour, on a daily chart that agrees, making a new leg down."
+    },
+    {
+      "id": "cs_lib_above_prior_range",
+      "name": "Above Prior Day Range",
+      "color": "#22c55e",
+      "enabled": true,
+      "mode": "or",
+      "direction": "long",
+      "sessions": [
+        "rth"
+      ],
+      "repeat_sec": 1800,
+      "size_hint": "half",
+      "source": "library",
+      "universe_profile": "up_liquid_movers",
+      "triggers": [
+        {
+          "id": "prior_day_break",
+          "options": [
+            "high"
+          ],
+          "params": {},
+          "repeat_sec": 0
+        },
+        {
+          "id": "break_recent_high",
+          "options": [
+            "15"
+          ],
+          "params": {
+            "lookback": 3
+          },
+          "repeat_sec": 0
+        }
+      ],
+      "parameters": [
+        {
+          "id": "dist_level",
+          "op": "gte",
+          "value": 0.0,
+          "option": "prior_high",
+          "params": {
+            "side": 1
+          }
+        },
+        {
+          "id": "rvol",
+          "op": "gte",
+          "value": 1.5,
+          "option": "",
+          "params": {}
+        },
+        {
+          "id": "rrs_m5",
+          "op": "gte",
+          "value": 0.0,
+          "option": "trade",
+          "params": {}
+        }
+      ],
+      "notes": "Trading above yesterday's entire range with volume: a breakout day in progress."
+    },
+    {
+      "id": "cs_lib_below_prior_range",
+      "name": "Below Prior Day Range",
+      "color": "#ef4444",
+      "enabled": true,
+      "mode": "or",
+      "direction": "short",
+      "sessions": [
+        "rth"
+      ],
+      "repeat_sec": 1800,
+      "size_hint": "half",
+      "source": "library",
+      "universe_profile": "up_liquid_movers",
+      "triggers": [
+        {
+          "id": "prior_day_break",
+          "options": [
+            "low"
+          ],
+          "params": {},
+          "repeat_sec": 0
+        },
+        {
+          "id": "break_recent_low",
+          "options": [
+            "15"
+          ],
+          "params": {
+            "lookback": 3
+          },
+          "repeat_sec": 0
+        }
+      ],
+      "parameters": [
+        {
+          "id": "dist_level",
+          "op": "gte",
+          "value": 0.0,
+          "option": "prior_low",
+          "params": {
+            "side": -1
+          }
+        },
+        {
+          "id": "rvol",
+          "op": "gte",
+          "value": 1.5,
+          "option": "",
+          "params": {}
+        },
+        {
+          "id": "rrs_m5",
+          "op": "gte",
+          "value": 0.0,
+          "option": "trade",
+          "params": {}
+        }
+      ],
+      "notes": "Trading below yesterday's entire range with volume: a breakdown day in progress."
+    },
+    {
+      "id": "cs_lib_testing_prior_high",
+      "name": "Testing Prior Day High",
+      "color": "#22c55e",
+      "enabled": true,
+      "mode": "or",
+      "direction": "long",
+      "sessions": [
+        "rth"
+      ],
+      "repeat_sec": 900,
+      "size_hint": "half",
+      "source": "library",
+      "universe_profile": "up_liquid_movers",
+      "triggers": [
+        {
+          "id": "near_hod",
+          "options": [
+            "high"
+          ],
+          "params": {},
+          "repeat_sec": 0
+        },
+        {
+          "id": "break_recent_high",
+          "options": [
+            "5"
+          ],
+          "params": {
+            "lookback": 5
+          },
+          "repeat_sec": 0
+        }
+      ],
+      "parameters": [
+        {
+          "id": "dist_level",
+          "op": "lte",
+          "value": 0.4,
+          "option": "prior_high",
+          "params": {
+            "side": 0
+          }
+        },
+        {
+          "id": "day_range_pos",
+          "op": "gte",
+          "value": 0.8,
+          "option": "",
+          "params": {}
+        },
+        {
+          "id": "rvol",
+          "op": "gte",
+          "value": 1.0,
+          "option": "",
+          "params": {}
+        },
+        {
+          "id": "rrs_m5",
+          "op": "gte",
+          "value": 0.0,
+          "option": "trade",
+          "params": {}
+        }
+      ],
+      "notes": "Pressing the high of day right at yesterday's high. The breakout has not happened yet."
+    },
+    {
+      "id": "cs_lib_testing_prior_low",
+      "name": "Testing Prior Day Low",
+      "color": "#ef4444",
+      "enabled": true,
+      "mode": "or",
+      "direction": "short",
+      "sessions": [
+        "rth"
+      ],
+      "repeat_sec": 900,
+      "size_hint": "half",
+      "source": "library",
+      "universe_profile": "up_liquid_movers",
+      "triggers": [
+        {
+          "id": "near_hod",
+          "options": [
+            "low"
+          ],
+          "params": {},
+          "repeat_sec": 0
+        },
+        {
+          "id": "break_recent_low",
+          "options": [
+            "5"
+          ],
+          "params": {
+            "lookback": 5
+          },
+          "repeat_sec": 0
+        }
+      ],
+      "parameters": [
+        {
+          "id": "dist_level",
+          "op": "lte",
+          "value": 0.4,
+          "option": "prior_low",
+          "params": {
+            "side": 0
+          }
+        },
+        {
+          "id": "day_range_pos",
+          "op": "lte",
+          "value": 0.2,
+          "option": "",
+          "params": {}
+        },
+        {
+          "id": "rvol",
+          "op": "gte",
+          "value": 1.0,
+          "option": "",
+          "params": {}
+        },
+        {
+          "id": "rrs_m5",
+          "op": "gte",
+          "value": 0.0,
+          "option": "trade",
+          "params": {}
+        }
+      ],
+      "notes": "Pressing the low of day right at yesterday's low. The breakdown has not happened yet."
+    },
+    {
+      "id": "cs_lib_volume_spike",
+      "name": "Volume Spike",
+      "color": "#f59e0b",
+      "enabled": true,
+      "mode": "or",
+      "direction": "all",
+      "sessions": [
+        "rth"
+      ],
+      "repeat_sec": 900,
+      "and_window_min": 1,
+      "size_hint": "half",
+      "triggers": [
+        {
+          "id": "volume_spike",
+          "options": [
+            "5"
+          ],
+          "params": {
+            "ratio": 3.0,
+            "lookback": 10.0
+          },
+          "repeat_sec": 0
+        }
+      ],
+      "notes": "A completed 5-min candle trades at least 3x the average volume of the previous 10 candles. A burst of volume right now, whatever the day looks like. Side is not implied: check the candle. At most once per stock every 15 min.",
+      "universe_profile": "up_liquid_movers",
+      "parameters": [],
+      "parameter_set": "",
+      "pending_filters": [],
+      "source": "library"
+    },
+    {
+      "id": "cs_lib_rvol_cross",
+      "name": "RVOL Crosses 2x",
+      "color": "#eab308",
+      "enabled": true,
+      "mode": "or",
+      "direction": "all",
+      "sessions": [
+        "rth"
+      ],
+      "repeat_sec": 0,
+      "and_window_min": 1,
+      "size_hint": "half",
+      "triggers": [
+        {
+          "id": "rvol_cross",
+          "options": [],
+          "params": {
+            "threshold": 2.0
+          },
+          "repeat_sec": 0
+        }
+      ],
+      "notes": "Day RVOL (volume so far against the 20-day average to this time of day) crosses above 2x. Fires once per crossing: the stock has become unusually active today.",
+      "universe_profile": "up_liquid_movers",
+      "parameters": [],
+      "parameter_set": "",
+      "pending_filters": [],
+      "source": "library"
+    }
+  ]
+}

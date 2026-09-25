@@ -1,0 +1,57 @@
+{
+  "_comment": [
+    "Seeded once, on first run, only when data/universe/profiles/ is empty.",
+    "Editing this file does NOT change profiles that already exist on disk.",
+    "",
+    "up_all is the default every assignment points at, so the day this ships",
+    "nothing is enforced anywhere and behaviour is unchanged.",
+    "",
+    "up_liquid_movers reproduces the screen build_universe.py applies today",
+    "(price >= 15, adv20 >= 5M, dollar volume >= 50M, ATR% >= 1). Assigning it",
+    "to the system setups is what makes widening the base universe safe: every",
+    "symbol in today's 243-name universe already passes all four by",
+    "construction, so the alert stream is unchanged until the universe grows.",
+    "",
+    "CAVEAT on atr_pct: build_universe.py computes it as mean(high-low)/close,",
+    "a simple average range. The atr_pct condition uses SymbolState.atr_d1,",
+    "which is a Wilder ATR. They are different numbers for the same symbol, so",
+    "a byte-equality proof against the CSV screen must account for it."
+  ],
+  "profiles": [
+    {
+      "id": "up_all",
+      "name": "All symbols",
+      "desc": "No conditions. Every symbol in the base universe passes. This is the default for every setup.",
+      "color": "#64748b",
+      "conditions": [],
+      "source": "system"
+    },
+    {
+      "id": "up_liquid_movers",
+      "name": "Liquid movers",
+      "desc": "The screen build_universe.py applies today, expressed as a profile. Large and mid caps that actually move: enough dollar volume to get filled, enough daily range to pay.",
+      "color": "#3b82f6",
+      "conditions": [
+        { "id": "price", "op": "gte", "value": 15 },
+        { "id": "avg_vol_20d", "op": "gte", "value": 5000000 },
+        { "id": "avg_dollar_vol_20d", "op": "gte", "value": 50000000 },
+        { "id": "atr_pct", "op": "gte", "value": 1.0 }
+      ],
+      "source": "system"
+    },
+    {
+      "id": "up_small_cap_runners",
+      "name": "Small cap runners",
+      "desc": "The opposite end of the base universe: cheap, low float, moving hard on volume. Unassigned by default. NOTE the float figure comes from yfinance and is stale often enough that it should not be trusted alone.",
+      "color": "#f59e0b",
+      "conditions": [
+        { "id": "price", "op": "gte", "value": 1 },
+        { "id": "atr_pct", "op": "gte", "value": 4.0 },
+        { "id": "float_shares", "op": "lte", "value": 20000000 },
+        { "id": "rvol", "op": "gte", "value": 3.0 },
+        { "id": "session_volume", "op": "gte", "value": 500000 }
+      ],
+      "source": "system"
+    }
+  ]
+}

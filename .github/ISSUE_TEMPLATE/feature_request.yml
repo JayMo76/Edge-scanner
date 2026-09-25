@@ -1,0 +1,35 @@
+name: Feature request
+description: Suggest a window, a workflow or anything else.
+labels: [enhancement]
+body:
+  - type: markdown
+    attributes:
+      value: |
+        Ideas and questions are also welcome in
+        [Discussions](https://github.com/simonro/edge-scanner/discussions). For a specific alert
+        pattern or filter, use the "Trigger or condition request" form instead.
+  - type: textarea
+    id: problem
+    attributes:
+      label: What are you trying to do
+      description: The trading problem, not the implementation. What do you watch for today, and what does it cost you?
+    validations:
+      required: true
+  - type: textarea
+    id: idea
+    attributes:
+      label: What would solve it
+    validations:
+      required: true
+  - type: dropdown
+    id: kind
+    attributes:
+      label: What kind of change is this
+      options:
+        - A dashboard window or layout
+        - A data provider
+        - The alert feed or an integration
+        - Setup building and configuration
+        - Something else
+    validations:
+      required: true
