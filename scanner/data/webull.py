@@ -19,7 +19,7 @@ from scanner.data.interface import DataFeed, Timeframe
 log = logging.getLogger(__name__)
 _COLUMNS = ("open", "high", "low", "close", "volume", "vwap", "trade_count")
 _SPANS = {"1Min": "M1", "5Min": "M5", "15Min": "M15", "30Min": "M30",
-          "1Hour": "M60", "4Hour": "M240", "1Week": "W1", "Day": "D1"}
+          "1Hour": "M60", "4Hour": "M240", "1Week": "W", "Day": "D"}
 
 
 def _payload(response):
@@ -41,8 +41,10 @@ def _rows(payload, symbol):
     if isinstance(payload, dict):
         if isinstance(payload.get(symbol), list):
             return payload[symbol]
-        if payload.get("symbol", "").upper() == symbol and isinstance(payload.get("bars"), list):
-            return payload["bars"]
+        if str(payload.get("symbol", "")).upper() == symbol:
+            for key in ("bars", "result", "data"):
+                if isinstance(payload.get(key), list):
+                    return payload[key]
     if isinstance(payload, list):
         for entry in payload:
             if isinstance(entry, dict) and str(entry.get("symbol", "")).upper() == symbol:
@@ -98,7 +100,7 @@ class WebullFeed(DataFeed):
             raise ValueError(f"Unsupported Webull timeframe: {timeframe}")
         # Partition to stay below Webull's 1200-bar response cap. Closed daily
         # windows avoid crossing into the next chunk's first bar.
-        step = 2 if timeframe == "1Min" else 4 if timeframe == "5Min" else 90
+        step = 1 if timeframe == "1Min" else 4 if timeframe == "5Min" else 90
         parts = []
         cursor = start
         while cursor <= end:
@@ -107,7 +109,7 @@ class WebullFeed(DataFeed):
                 symbols=[symbol], category="US_STOCK", timespan=_SPANS[timeframe],
                 count="1200", start_time=int(pd.Timestamp(cursor, tz="UTC").timestamp() * 1000),
                 end_time=int((pd.Timestamp(last, tz="UTC") + pd.Timedelta(days=1)).timestamp() * 1000) - 1,
-                trading_sessions="PRE,RTH,POST" if timeframe != "Day" else None,
+                trading_sessions="PRE,RTH,ATH" if timeframe != "Day" else None,
             )
             parts.append(_frame(_rows(_payload(result), symbol)))
             cursor = last + timedelta(days=1)
@@ -153,7 +155,8 @@ class WebullFeed(DataFeed):
                 for offset in range(0, len(symbols), 20):
                     batch = symbols[offset:offset + 20]
                     response = self._client.market_data.get_batch_history_bar(
-                        batch, "US_STOCK", "M1", count="3", trading_sessions="PRE,RTH,POST")
+                        batch, "US_STOCK", "M1", count="3", real_time_required=True,
+                        trading_sessions="PRE,RTH,ATH")
                     payload = _payload(response)
                     for symbol in batch:
                         frame = _frame(_rows(payload, symbol))

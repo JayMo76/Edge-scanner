@@ -30,7 +30,7 @@ def test_webull_market_data_is_normalized_without_alpaca():
     assert got.index.tz is not None
     assert list(got.columns) == ["open", "high", "low", "close", "volume", "vwap", "trade_count"]
     assert feed.get_snapshot(["LHSW"]) == {"LHSW": {"price": 1.2}}
-    assert all(span == "D1" for _, span, _ in market.calls)
+    assert all(span == "D" for _, span, _ in market.calls)
 
 
 def test_large_watchlist_is_rejected_before_requests():
@@ -40,3 +40,12 @@ def test_large_watchlist_is_rejected_before_requests():
         feed.subscribe_minute_bars([f"T{i}" for i in range(41)], lambda _: None)
     assert not market.calls
 
+
+def test_official_webull_bar_response_shape():
+    from scanner.data.webull import _frame, _rows
+    payload = [{"symbol": "LHSW", "result": [{
+        "time": "2026-09-22T09:00:09.945+0000", "open": "1.0", "high": "1.2",
+        "low": "0.9", "close": "1.1", "volume": "125000"}]}]
+    frame = _frame(_rows(payload, "LHSW"))
+    assert len(frame) == 1
+    assert frame.iloc[0]["volume"] == 125000
