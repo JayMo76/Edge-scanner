@@ -49,3 +49,12 @@ def test_official_webull_bar_response_shape():
     frame = _frame(_rows(payload, "LHSW"))
     assert len(frame) == 1
     assert frame.iloc[0]["volume"] == 125000
+
+
+def test_startup_multi_history_methods_return_daily_and_intraday():
+    market = StubMarket()
+    feed = WebullFeed(data_client=SimpleNamespace(market_data=market))
+    dates = (date(2023, 11, 14), date(2023, 11, 15))
+    assert "LHSW" in feed.get_historical_daily_multi(["LHSW"], *dates)
+    assert "LHSW" in feed.get_historical_bars_multi(["LHSW"], "5Min", *dates)
+    assert [span for _, span, _ in market.calls] == ["D", "M5"]

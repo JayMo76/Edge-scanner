@@ -11,6 +11,7 @@ import threading
 import time
 from datetime import date, timedelta
 from typing import Callable
+from zoneinfo import ZoneInfo
 
 import pandas as pd
 
@@ -20,6 +21,7 @@ log = logging.getLogger(__name__)
 _COLUMNS = ("open", "high", "low", "close", "volume", "vwap", "trade_count")
 _SPANS = {"1Min": "M1", "5Min": "M5", "15Min": "M15", "30Min": "M30",
           "1Hour": "M60", "4Hour": "M240", "1Week": "W", "Day": "D"}
+_ET = ZoneInfo("America/New_York")
 
 
 def _payload(response):
@@ -107,15 +109,16 @@ class WebullFeed(DataFeed):
             last = min(cursor + timedelta(days=step - 1), end)
             result = self._client.market_data.get_batch_history_bar(
                 symbols=[symbol], category="US_STOCK", timespan=_SPANS[timeframe],
-                count="1200", start_time=int(pd.Timestamp(cursor, tz="UTC").timestamp() * 1000),
-                end_time=int((pd.Timestamp(last, tz="UTC") + pd.Timedelta(days=1)).timestamp() * 1000) - 1,
+                count="1200", start_time=int(pd.Timestamp(cursor, tz=_ET).timestamp() * 1000),
+                end_time=int(pd.Timestamp(last + timedelta(days=1), tz=_ET).timestamp() * 1000) - 1,
                 trading_sessions="PRE,RTH,ATH" if timeframe != "Day" else None,
             )
             parts.append(_frame(_rows(_payload(result), symbol)))
             cursor = last + timedelta(days=1)
         frame = pd.concat(parts).sort_index() if parts else _frame([])
         frame = frame[~frame.index.duplicated(keep="last")]
-        return frame[(frame.index.date >= start) & (frame.index.date <= end)]
+        trading_dates = frame.index.tz_convert(_ET).date
+        return frame[(trading_dates >= start) & (trading_dates <= end)]
 
     def get_historical_daily(self, symbol, start, end):
         return self._history(symbol, "Day", start, end)
@@ -125,6 +128,34 @@ class WebullFeed(DataFeed):
 
     def get_bars_range(self, symbol, timeframe, start, end):
         return self._history(symbol, timeframe, start, end)
+
+    def _multi(self, symbols, timeframe, start, end, progress=None):
+        out = {}
+        for index, symbol in enumerate(dict.fromkeys(symbols), 1):
+            try:
+                frame = self._history(symbol, timeframe, start, end)
+                if not frame.empty:
+                    out[symbol] = frame
+            except Exception as exc:
+                log.warning("Webull history missing for %s: %s", symbol, exc)
+            if progress:
+                progress(index, len(symbols))
+        return out
+
+    def get_historical_daily_multi(self, symbols, start, end, workers=0, progress=None):
+        return self._multi(symbols, "Day", start, end, progress)
+
+    def get_historical_bars_multi(self, symbols, timeframe, start, end, workers=0, progress=None):
+        return self._multi(symbols, timeframe, start, end, progress)
+
+    def get_todays_bars_multi(self, symbols, timeframe="1Min"):
+        today = pd.Timestamp.now(tz=_ET).date()
+        result = self._multi(symbols, timeframe, today, today)
+        # Never seed the current unfinished bar into alert calculations.
+        now = pd.Timestamp.now(tz="UTC")
+        size = pd.Timedelta(minutes=1 if timeframe == "1Min" else 5)
+        return {sym: frame[frame.index + size <= now - pd.Timedelta(seconds=5)]
+                for sym, frame in result.items()}
 
     def get_snapshot(self, symbols):
         result = {}
