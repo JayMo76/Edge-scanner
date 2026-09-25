@@ -1,6 +1,6 @@
 # Python 3.11+
 alpaca-py>=0.38.0
-webull-openapi-python-sdk>=3.0.1,<4
+webull-openapi-python-sdk>=3.0.2,<4
 pandas>=2.0.0
 numpy>=1.26
 pyarrow>=14.0.0
